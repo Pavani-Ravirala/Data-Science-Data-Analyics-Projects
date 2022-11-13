@@ -1,0 +1,180 @@
+---
+title: "R Code for Analysis of Customer Churn Prediction"
+author: '21203863'
+date: "2022-07-31"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+**Loading packages required for Analysis:-**
+```{r}
+library(ggplot2)
+library(cowplot)
+library(stringr)
+library(rpart)
+library(partykit)
+library(pROC)
+library(caret)
+```
+**Import data:-**
+```{r}
+churn_data = read.csv("Churn Data.csv")
+str(churn_data)
+```
+# Exploratory Data Analysis
+**Check for null values:-**
+```{r}
+apply(X = is.na(churn_data), MARGIN = 2, FUN = sum)
+```
+**Remove Null values:-**
+```{r}
+churn_data<-na.omit(churn_data)
+dim(churn_data)
+```
+**Analysis of Churn variable:-**
+```{r}
+ggplot(churn_data, aes(Churn)) + 
+  geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn))) + 
+  scale_y_continuous(labels=scales::percent) + theme_bw()+ xlab("Churn") + 
+  ylab("Percent")+ ggtitle("Churn Percent")+ theme(legend.position="none")
+```
+**Analysis of customer demographics:-**
+```{r}
+plot_grid(
+
+ggplot(churn_data, aes(x=gender,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)))+ scale_y_continuous(labels=scales::percent) + ylab("Percent") + theme_bw()+theme(legend.position="none"),
+  
+ggplot(churn_data, aes(x=SeniorCitizen,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw()+theme(legend.position="none"),
+  
+ggplot(churn_data, aes(x=Partner,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw(),
+  
+ggplot(churn_data, aes(x=Dependents,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw()+theme(legend.position="none"))
+```
+**Analysis of Service information:-**
+```{r}
+plot_grid(
+
+ggplot(churn_data, aes(x=PhoneService,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw()+theme(legend.position="none"),
+         
+ggplot(churn_data, aes(x=MultipleLines,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw()+theme(legend.position="none") + 
+          scale_x_discrete(labels = function(x) str_wrap(x, width = 10)),
+
+ggplot(churn_data, aes(x=InternetService,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw()+theme(legend.position="none"), 
+
+ggplot(churn_data, aes(x=OnlineSecurity,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw()+theme(legend.position="none")+scale_x_discrete(labels = function(x) str_wrap(x, width = 10)),
+
+ggplot(churn_data, aes(x=OnlineBackup,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(labels = function(x) str_wrap(x, width = 10)),
+          
+ggplot(churn_data, aes(x=DeviceProtection,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw()+theme(legend.position="none")+ scale_x_discrete(labels = function(x) str_wrap(x, width = 10)),
+          
+ggplot(churn_data, aes(x=TechSupport,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw() +theme(legend.position="none")+ scale_x_discrete(labels = function(x) str_wrap(x, width = 10)),
+          
+ggplot(churn_data, aes(x=StreamingTV,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw() +
+theme(legend.position="none") + scale_x_discrete(labels = function(x) str_wrap(x, width = 10)),
+
+ggplot(churn_data, aes(x=StreamingMovies,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw() + scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
+)
+```
+**Analysis of Customer Information:-**
+*Categorical data:-*
+```{r}
+plot_grid(
+ggplot(churn_data, aes(x=Contract,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw() + scale_x_discrete(labels = function(x) str_wrap(x, width = 10)),
+
+ggplot(churn_data, aes(x=PaperlessBilling,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw() + theme(legend.position="none") + scale_x_discrete(labels = function(x) str_wrap(x, width = 10)),
+
+ggplot(churn_data, aes(x=PaymentMethod,fill=Churn))+ geom_bar(aes(y = (..count..)/sum(..count..), fill = factor(Churn)),position = 'fill')+scale_y_continuous(labels=scales::percent) + ylab("Percent")+theme_bw() + theme(legend.position="none") + scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
+
+)
+```
+*Numerical data:-*
+```{r}
+plot_grid(
+ggplot(churn_data, aes(y= tenure, x = "", fill = Churn)) + 
+geom_boxplot()+ 
+theme_bw()+ theme(legend.position="none")+
+xlab(" "),
+
+ggplot(churn_data, aes(y= MonthlyCharges, x = "", fill = Churn)) + 
+geom_boxplot()+ 
+theme_bw()+ theme(legend.position="none")+
+xlab(" "),
+
+ggplot(churn_data, aes(y= TotalCharges, x = "", fill = Churn)) + 
+geom_boxplot()+ 
+theme_bw()+
+xlab(" ")
+)
+```
+# Data Preprocessing
+**Preprocessing steps:-**
+```{r}
+# Re-encode No internet Service and No as No
+churn_data<- data.frame(lapply(churn_data, function(x) {
+  gsub("No internet service", "No", x)}))
+# Re-encode No phone service and No as No
+churn_data<- data.frame(lapply(churn_data, function(x) {
+  gsub("No phone service", "No", x)}))
+# Remove numerical variables and scale them
+num_columns <- c("tenure", "MonthlyCharges", "TotalCharges")
+churn_data[num_columns] <- sapply(churn_data[num_columns], as.numeric)
+
+churn_int <- churn_data[,c("tenure", "MonthlyCharges", "TotalCharges")]
+churn_int <- data.frame(scale(churn_int))
+# Remove categorical variables and create dummy variables
+churn_cat <- churn_data[,-c(1,6,19,20)]
+
+#Creating Dummy Variables
+dummy<- data.frame(sapply(churn_cat,function(x) data.frame(model.matrix(~x-1,data =churn_cat))[,-1]))
+
+#Combining the data
+churn_final <- cbind(churn_int,dummy)
+# Response variable as factor
+churn_final$Churn <-as.factor(churn_final$Churn)
+```
+# Modelling
+**Split data to train and test:-**
+```{r}
+set.seed(123)
+indices = createDataPartition(churn_final$Churn, p = 0.70, list = FALSE)
+train = churn_final[indices,]
+validation = churn_final[-indices,]
+```
+**Fit Logistic Regression model and save the model:-**
+```{r}
+fit <- glm(Churn ~ ., data = train, family = "binomial")
+save(fit, file = 'LogisticRegression.rda')
+phat <- predict(fit,newdata=validation[,-24],type = "response")
+tau <- 0.5
+pred <- ifelse(phat > tau, 1, 0)
+cm_lr<-confusionMatrix(as.factor(pred), as.factor(validation$Churn))
+cm_lr
+```
+**Fit Decision Trees and save the model:-**
+```{r}
+grid <- 10^seq(10, -2, length = 100)
+train_ctrl <- trainControl(method = "repeatedcv", number = 5, repeats = 10)
+tune_grid <- expand.grid(cp = grid)
+fit_dtr <- train(Churn ~ ., data = train,
+                method = "rpart",
+                trControl = train_ctrl,
+                tuneGrid = tune_grid)
+fit_dt=rpart(Churn~.,data=train,control=rpart.control(cp=fit_dtr$bestTune[[1]]))
+save(fit_dt, file = 'DecisionTrees.rda')
+predict_unseen <-predict(fit_dt,validation[,-24],type='class')
+cm_dt<-confusionMatrix(validation$Churn,predict_unseen,positive="0")
+cm_dt
+plot(as.party(fit_dt))
+```
+#Model Evaluation
+**ROC-AUC curve:-**
+```{r}
+glm.roc <- roc(response = validation$Churn, predictor = as.numeric(pred))
+DT.roc <- roc(response = validation$Churn, predictor = as.numeric(predict_unseen))
+plot(glm.roc,legacy.axes = TRUE, print.auc.y = 1.0, print.auc = TRUE)
+plot(DT.roc, col = "blue", add = TRUE, print.auc.y = 0.65, print.auc = TRUE)
+legend("bottomright", c("Decision Tree", "Logistic"),
+       lty = c(1,1), lwd = c(2, 2), col = c("blue", "black"), cex = 0.75)
+```

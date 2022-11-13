@@ -1,0 +1,25 @@
+"MonthlyCharges" - 104.80
+"TotalCharges" - 3046.05
+"tenure" - 28
+"PaymentMethod" - Electronic Cheque
+"OnlineBackup" - No
+"Contract" - Month To Month
+"gender" - Female
+"SeniorCitizen" - No
+"Partner" - Yes
+"Dependents" - No
+"PaperlessBilling" - Yes
+"PhoneService" - Yes
+"MultipleLines" - Yes
+"InternetService" - Fiber Optic
+"OnlineSecurity" - No
+"DeviceProtection" - Yes
+"TechSupport" - Yes
+"StreamingTV" - Yes
+"StreamingMovies" - Yes
+
+
+Click Predict
+
+
+Result : Churn
