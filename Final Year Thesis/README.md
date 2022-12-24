@@ -27,7 +27,7 @@ To clone the project the easy way is to install GIT DESKTOP <a href="https://des
 Once the Installation file is downloaded Double click on the file and Follow the instructions.
 (i.e, either set up repository based on GitHub account or skip the step and provide name and email.)
 
-<img src="https://github.com/Pavani-Ravirala/Data-Science-and-Data-Analytics-Projects/tree/main/Final%20Year%20Thesis/images">
+<img src="https://user-images.githubusercontent.com/107501631/209439765-2bb450f1-fe4d-4107-a2a8-e73069b94f3e.png">
 
 Once the above screen is reached, Click "Clone a repository from the internet"
 
