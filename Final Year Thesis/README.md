@@ -27,11 +27,11 @@ To clone the project the easy way is to install GIT DESKTOP <a href="https://des
 Once the Installation file is downloaded Double click on the file and Follow the instructions.
 (i.e, either set up repository based on GitHub account or skip the step and provide name and email.)
 
-<img src="https://github.com/ACM40960/project-Pyate/blob/main/images/git%20step1.png">
+<img src="https://github.com/Pavani-Ravirala/Data-Science-and-Data-Analytics-Projects/tree/main/Final%20Year%20Thesis/images/git%20step1.png">
 
 Once the above screen is reached, Click "Clone a repository from the internet"
 
-<img src="https://github.com/ACM40960/project-Pyate/blob/main/images/Clone%20URL%20Step.png">
+<img src="https://github.com/Pavani-Ravirala/Data-Science-and-Data-Analytics-Projects/tree/main/Final%20Year%20Thesis/images/Clone%20URL%20Step.png">
 
 In the next screen, select the URL Tab and enter URL and choose local file for repository to be cloned into as shown in image.
 
@@ -98,7 +98,7 @@ Once the clone of whole repository is completed and Upon completion of installat
 
 •	from the MODEL folder open the Ui.R and Server.R files in R Studio.
 
-<img src="https://github.com/ACM40960/project-Pyate/blob/main/images/Open%20and%20Run%20App.png">
+<img src="https://github.com/Pavani-Ravirala/Data-Science-and-Data-Analytics-Projects/tree/main/Final%20Year%20Thesis/images/Open%20and%20Run%20App.png">
 
 •	Click “Run App” at the top mid of the screen (which is marked in above image).
 
@@ -118,19 +118,19 @@ Once the clone of whole repository is completed and Upon completion of installat
 
 •	One can wish to Visualize or not to visualize the Analysis plots by simply `check or uncheck` the check box provided.
 
-<img src="https://github.com/ACM40960/project-Pyate/blob/main/images/Shiny%20App%20Merged_1.png">
+<img src="https://github.com/Pavani-Ravirala/Data-Science-and-Data-Analytics-Projects/tree/main/Final%20Year%20Thesis/images/Shiny%20App%20Merged_1.png">
  
 •	To Check above Improper text scenario, please load the `“Improper Dataset.csv”` from the Model folder by using browse option
  
 •	If the dataset provided is of improper format, an user friendly message would be displayed asking the user to provide a valid Dataset.
 
- <img src="https://github.com/ACM40960/project-Pyate/blob/main/images/Merged%20Dataset%20images.png"> 
+ <img src="https://github.com/Pavani-Ravirala/Data-Science-and-Data-Analytics-Projects/tree/main/Final%20Year%20Thesis/images/Merged%20Dataset%20images.png"> 
 
 ## Model Building and Model Summary:
 
 In the Current context two of the many available models have been tried to fit i.e., logistic Regression and Decision Tree where below is the Summary of both models. 
 
-<img src="https://github.com/ACM40960/project-Pyate/blob/main/images/combined%20image_1.png">
+<img src="https://github.com/Pavani-Ravirala/Data-Science-and-Data-Analytics-Projects/tree/main/Final%20Year%20Thesis/images/combined%20image_1.png">
 
 We can see that the Accuracy and Sensitivity of the Logistic Regression is High compared to Decision Tree even Specificity is reasonal among the both. We can also infer that from the summary tables Logistic Regession perfroms slightly better than the Decision tree and can be used for the future predictions.
 Also From the ROC AUC curve we an assess that Logistic regression is better performing one than the Decision Tree.
